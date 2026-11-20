@@ -89,7 +89,10 @@
 
   function dataDa(iso) {
     var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso || '');
-    return m ? new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]), 12) : null;
+    if (m) return new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]), 12);
+    // Anche "gg/mm/aaaa" (date scritte all'italiana nell'app).
+    m = /^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})$/.exec(String(iso || '').trim());
+    return m ? new Date(Number(m[3]), Number(m[2]) - 1, Number(m[1]), 12) : null;
   }
   function iso(d) {
     return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
